@@ -4,10 +4,9 @@ namespace Terrain_Generation{
 	public class MapDisplay : MonoBehaviour{
 
 		[SerializeField] private GameObject block;
-		
 		private Transform mapParent;
 		
-		public void DrawPoints (MapData mapData, float groundThreshold){
+		public void DrawBlocks (MapData mapData, float groundThreshold, bool inverse){
 			ClearMap ();
 			UpdateData ();
 			
@@ -19,10 +18,20 @@ namespace Terrain_Generation{
 			for (int z = 0; z < mapDepth; z++){
 				for (int y = 0; y < mapHeight; y++){
 					for (int x = 0; x < mapWidth; x++){
-						if (mapData.ValueMap[x,y,z] >= groundThreshold){
-							GameObject curBlock = Instantiate(block, new Vector3(x, y, z), Quaternion.identity, mapParent);
-							//curBlock.transform.localScale *= -mapData.ValueMap[x, y, z];
-							//curBlock.GetComponent<Renderer>().material.color.a -= mapData.ValueMap[x, y, z] * 5;
+						if (inverse){
+							if (mapData.ValueMap[x,y,z] >= groundThreshold){
+								GameObject curBlock = Instantiate(block, new Vector3(x, y, z), Quaternion.identity, mapParent);
+								//curBlock.transform.localScale *= -mapData.ValueMap[x, y, z];
+								//curBlock.GetComponent<Renderer>().material.color.a -= mapData.ValueMap[x, y, z] * 5;
+								
+							}	
+						}
+						else{
+							if (mapData.ValueMap[x,y,z] <= groundThreshold){
+								GameObject curBlock = Instantiate(block, new Vector3(x, y, z), Quaternion.identity, mapParent);
+								//curBlock.transform.localScale *= -mapData.ValueMap[x, y, z];
+								//curBlock.GetComponent<Renderer>().material.color.a -= mapData.ValueMap[x, y, z] * 5;
+							}	
 						}
 					}
 				}
